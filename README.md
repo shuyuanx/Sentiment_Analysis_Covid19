@@ -177,9 +177,9 @@ Most of the historical and current tweets are identified as positive, which is h
 
 
 ## Conclusion
-Both Naive Bayes model and the Random Forest model have satisfying performance, with respectively 0.83 and 0.9379 accuracy (correctly classfied labels). The Naive Bayes model achieved parallelization by applying multiprocessing (pool method) in priors and posteriors, and the random forest utilized multiprocessing, multithreading, and map reduce in realize TF-IDF convertion. They both achieved reasonable speedups. 
+Both Naive Bayes model and the Random Forest model have satisfying performance, with respectively 0.83 and 0.9379 accuracy (correctly classified labels). The Naive Bayes model achieved parallelization by applying multiprocessing (pool method) in priors and posteriors, and the random forest utilized multiprocessing, multithreading, and map reduce in realize TF-IDF conversion. They both achieved reasonable speedups. 
 
-The two models have their own pros and cons. For the Naive Bayes model, the labels are either positive or negative, so it doesn't provide a possibility for being neutral. And for the Random Forest model, many negative texts are classfied as positive (false positive). In some cases, the number of positive posts are much larger than that of negative posts, which is highly unlikely to be real.  
+The two models have their own pros and cons. For the Naive Bayes model, the labels are either positive or negative, so it doesn't provide a possibility for being neutral. And for the Random Forest model, many negative texts are classified as positive (false positive). In some cases, the number of positive posts are much larger than that of negative posts, which is highly unlikely to be real.  
 
 ## Citation
 https://machinelearningmastery.com/implement-random-forest-scratch-python/
