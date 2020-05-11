@@ -50,7 +50,7 @@ Because we did not tag the sentiment of the tweets we collected, we used two oth
 
 ```
 ```
-
+![](./images/data_processing.png)
 
 
 
