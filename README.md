@@ -165,13 +165,18 @@ The goal of our project is to analyze the textual contents of people’s tweets 
 The implementations of the two models are already very nice, and the performance is fairly satisfying. However, if we were to suggest some further improvements to make the models even better. They would be as follows. The two models are using different dataset because of the tags and stop word issue. And while the labels of the random forest model can be positive, negative, or neural, the labels of the naive bayes model can only be either positive or negative. Two models are using different word representations. (But this can also be viewed as a way to explore the effect of different embedding method)  
 
 ### Lessons Learnt
+Multiprocessing and multithreading are very powerful tools when applied to real-world computation, and they could achieve great speedup. And they could be combined with map reduce. It is a very good practice to use map reduce to process the data needed, and then apply multiprocessing and multithreading to the models and computations. This combination can boost performance by a fair amount. 
+
 ### Future Work
+There are a lot of future work that could be done to further exploit this topic. 
+- Build CNN or RNN (LSTM with/without attention) to classify the attitudes of the texts.
+- Try to relate the attitudes of the tweets to more specific events, topics, or figures by the key words search in the textual contents.
+- Instead of having only positive, negative, and neural for labels, we could further divide the labels into numerical degrees to evaluate how positive or how negative the tweets are.
+
 ### Interesting Insights
 In the Random Forest Model, we used a TextBlob to identify sentiment from the contents of the tweets, and it will predict a label that is positive, neural, or negative.
 The model identified many negative tweets as positive (false positive)
-Most of the historical and current tweets are identified as positive, which is highly unlikely at this point. 
-
-
+Most of the historical and current tweets are identified as positive, which is highly unlikely at this point. As this is a consistant midstake, it might be due to some structural error and midunderstanding of the models. This could be further exploited. 
 
 
 ## Conclusion
