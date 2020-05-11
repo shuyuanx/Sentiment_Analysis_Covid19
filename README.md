@@ -71,7 +71,42 @@ To run Bayes, we need to have priors set up by training data, where we record th
 
 In our code, we have applied Bayes to a sample of size 100,000 out of 1.6 million tweets, 80% for training and 20% for testing. We achieved 83% accuracy overall in the Bayes model, and we will apply this trained Bayes model to predict fresh tweets lately to see users’ attitudes with time varying. This gives the number of positive and negative tweets given different dates in May.
 
-<img src="./images/data_processing.png">
+<img src="./images/sentiment.png">
+<img src="./images/table.png">
 
+We can see that the number of negative tweets are all greater than that of positive tweets during these days. It is not surprising as we see many concerns coming with COVID19 these days. Moreover, it is worth noticing that the number of total tweets overall is increasing over time, so simply checking the difference between the number of positive and negative tweets would be somehow biased. It would be interesting to ask how much these concerns and negative tweets result from COVID19, how positive tweets connect with development of COVID19 updates, and other questions developing over time specifically convolved with COVID19 timely updates.
 
+### Random Forest Model:
+
+Before the implementation of the random forest model, we need to preprocess the text data of tweets and convert them into numerical data. Here we use TF-IDF (Term Frequency Inverse Document Frequency) method to convert the text data into numerical vectors. This process can be parallelized by using MapReduce and Multiprocessing. And the performance of these parallelization methods will be discussed in later sections.
+
+We used the random forest model to train and classify the twitter-airline-sentiment tweets into positive, neutral, and negative. Then we used this model to predict the sentiments of coronavirus related tweets. The overall accuracy score of the random forest model is around 0.9379. The confusion matrix of the results is shown as follows:
+
+<img src="./images/confusion_matrix_rfc_model.png">
+
+We can see that the performance of this random forest model is relatively high and the imbalanced data does not lead to highly biased predictions. We have also used the random forest model from a library in PySpark, but the accuracy rate is not as high as this model. So we use this model for future sentiment predictions.
+
+While the random forest model is implemented by hand and the dataset is quite large, it takes extremely long time to train the algorithm and make predictions and evaluations. So parallel computing can be applied in this process in order to reduce the program run time. Here we mainly use the Multiprocessing module in Python for parallelization, and Multithreading is also used in some functions to further reduce the run time. The performance of these two parallelization methods will also be discussed in later sections.
+
+After the evaluation of this random forest model, we save this model and use it to predict the sentiments of the 16900 coronavirus related tweets scraped from Twitter. The predicted results is shown in the following plot:
+
+<img src="./images/prediction_result.png">
+
+We can see from the plot that the number of tweets that are predicted as negative is the highest, while the number of tweets predicted as positive is the lowest. 
+
+We also predicted the sentiments of another dataset with 114496 coronavirus related tweets scraped from Twitter. The predicted results is shown in the following plot:
+
+<img src="./images/prediction_over_time.png">
+
+From this plot we can see that for this larger dataset, the number of tweets that are predicted as negative is slightly lower than the number of tweets predicted as neutral and is much higher than the number of tweets predicted as positive over time (from May 2nd to May 8th). 
+
+## Performance Evaluation
+### Naive Bayes Model
+We have discussed why we can apply multiprocessing to help us speed up our Bayes model. We used the Pool function here to give an optimal number of processes needed for prior and posterior calculations. This optimal number greatly depends on the number of samples, i.e. the number of tweets we want to calculate for predictions. Therefore, we set the number of samples as the independent variable, and time spent as dependent variable. Specifically, we recorded the serial time, the time spent when running the predictions in serial, and the parallel time, the time spent when we applied multiprocessing as optimizations to run the predictions in parallel. Here is the time plot.
+
+<img src="./images/time.png">
+
+Having this, we can further see the speedup, the ratio of parallel time to serial time.
+
+<img src="./images/speedup.png">
 
