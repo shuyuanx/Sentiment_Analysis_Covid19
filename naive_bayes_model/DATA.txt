@@ -1,0 +1,5 @@
+Since original training dataset is about 1.6 millions from kaggle, it is too large to upload to github. Therefore, we leave the link for dataset for anyone who is interested in reproduce these experiments and tests.
+
+Tweets sentimental analysis data with targets for training and validation(kaggle): https://www.kaggle.com/kazanova/sentiment140
+
+Recent tweets data without sentiment targets for prediction can be found in data directory in master branch.
