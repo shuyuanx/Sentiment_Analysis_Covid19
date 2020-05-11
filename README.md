@@ -1,9 +1,6 @@
-# Sentiment_Analysis_Covid19
-Repository for CS205 Final Project, Spring 2020
+# Tweets Sentiment Analysis for Covid19 -- CS 205 Final Project
 
-# CS 205 Final Project
-
-Names: Weiru Chen, Shuyuan Xiao, Wanxi Yang, Zhao Lyu
+#### Names: Weiru Chen, Shuyuan Xiao, Wanxi Yang, Zhao Lyu
 
 ## Problem Statement
 
