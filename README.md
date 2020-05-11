@@ -43,14 +43,35 @@ The main datasets we used in the project are collected from Twitter. Because the
   
 
 There are two main datasets. The first data set consists of about 1,6000 tweets that include “coronavirus” on May 2nd, 2020. The second data set consists of about 10,000 tweets that include “coronavirus” from May 2nd to May 8th 2020. Because Twitter tends to limit API’s visits, these are not the complete tweets that include “coronavirus.”
-
-  
+ 
 
 Because we did not tag the sentiment of the tweets we collected, we used two other Twitter datasets as our training material. For the Naive Bayes model, we used the Sentiment140 dataset on Kaggle for training. For the Random Forest model, we used the Twitter Airline Sentiment dataset on Kaggle for training.
 
-```
-```
+<img src="./images/data_processing.png">
 
+
+## Technical Description
+- Random Forest Model:
+  - Programming language: Python 3.7.4
+  - Python libraries: 
+    - Numpy, Pandas, re, nltk, sqlite3, sklearn, gensim, collections, sys 
+    - csv, multiprocessing, threading, random, time, itertools, textblob 
+  - PySpark libraries: 
+    - pyspark.sql, pyspark.ml, pyspark.mllib 
+  - PySpark environment (see performance evaluation for more information): 
+    - AWS EC2 environment 
+    - Ubuntu 16.04 
+    - m4.xlarge instance 
+ 
+## Model
+### Naive Bayes Model:
+Previously we have seen how the Bayes model will help us in sentiment analysis using prior and posterior. Before calculating any probabilities for posteriors, we need to first preprocess our data as they are not numerical data type. Overall we are only interested in the sentiment, users’ attitudes, and text, users’ tweets. Therefore, we group sentiments into three categories: positive, neutral and negative. Moreover, we apply the bag of words (BOW) to text. That is, we map each text into a list of strings, and therefore we can calculate priors and posteriors based on appearances of strings. This will definitely be a big dataset that grows even more with time. Further, timely feedback is necessary in dealing with sentimental problems since we are interested in how users’ attitudes change. So the task would fail if feedback can not be generated in a timely manner, possibly due to slow process in processing and digesting the huge dataset. Note that ordering is not required in BOW, so we could optimize priors and posteriors calculations in Bayes model.
+
+To run Bayes, we need to have priors set up by training data, where we record the probability of each word appearing. Then in the prediction method, we will use these priors for posteriors. (TODO: May add formula to show how Bayes works) Again, no ordering is needed here, so we could apply multiprocessing, specifically pool method, to update posteriors of positive, neutral, and negative text by testing data.
+
+In our code, we have applied Bayes to a sample of size 100,000 out of 1.6 million tweets, 80% for training and 20% for testing. We achieved 83% accuracy overall in the Bayes model, and we will apply this trained Bayes model to predict fresh tweets lately to see users’ attitudes with time varying. This gives the number of positive and negative tweets given different dates in May.
+
+<img src="./images/data_processing.png">
 
 
 
