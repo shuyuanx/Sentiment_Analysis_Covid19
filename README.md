@@ -169,6 +169,8 @@ There are a lot of future work that could be done to further exploit this topic.
 - Build CNN or RNN (LSTM with/without attention) to classify the attitudes of the texts.
 - Try to relate the attitudes of the tweets to more specific events, topics, or figures by the key words search in the textual contents.
 - Instead of having only positive, negative, and neural for labels, we could further divide the labels into numerical degrees to evaluate how positive or how negative the tweets are.
+- Convert the classification problem into a regression problem. Building on that, we could further explored the factor that affect the resulting score and identify what are the reasons that make a tweet positive or negative. 
+
 
 ### Interesting Insights
 In the Random Forest Model, we used a TextBlob to identify sentiment from the contents of the tweets, and it will predict a label that is positive, neural, or negative.
