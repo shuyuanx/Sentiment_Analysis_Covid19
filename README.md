@@ -110,3 +110,79 @@ Having this, we can further see the speedup, the ratio of parallel time to seria
 
 <img src="./images/speedup.png">
 
+### Random Forest Model
+The original run time of the serial version of TF-IDF function is around 11.25 seconds. After using mapper, reducer, and multiprocessing (with 4 cores) methods, the run time has largely decreased to around 7.11 seconds. The breakdown of the run time is shown in the following pie chart:
+
+<img src="./images/pie_chart.png">
+
+The MapReduce method is used for computing the values of document frequency, and the Multiprocessing method is used for computing the values of term frequency inverse document frequency after mapper and reducer. The run time of these two programs is very close, which is over 3 seconds. The exact serial runtime and parallel runtime used is presented in the following two tables:
+
+<img src="./images/two_table.png">
+
+We also have a larger dataset with 114496 coronavirus related tweets. If computing the values of TF-IDF using this dataset, the run time would reduce from 71.24 seconds to 31 (mapreduce)+29.15 (multiprocessing) = 60.15 seconds.
+
+For the random forest model we use both multiprocessing and multithreading methods for parallelization, with multiprocessing as the main method. We experiment with k=1,2,3,4 cores and n=1,2,3,4 threads to compute the run time of the program and compute the speedups. The speedups for the multiprocessing method is shown in the following plot:
+
+<img src="./images/mp_speedup.png">
+
+For the multiprocessing method, we randomly sampled 10 percent of the original dataset for the training process to reduce the experimentation time. From the plot we can see that the runtime has been decreasing as the number of cores increases, while the decreasing rate is slowing down. And the speedup is the highest when there are k=4 cores. In our experimentation, we also found that the runtime has been increasing when the number of cores is larger than 4. Therefore, the speedup is optimized when the number of cores equals to 4, which is around 2.5.
+
+The speedup for the the multithreading method is shown in the following plot:
+
+<img src="./images/mt_speedup.png">
+
+For the multithreading method, we use the whole original dataset for the training method, while we use the multiprocessing method in addition to reduce the runtime. And we choose the optimized k=4 cores for this experiment. As the multithreading method is only used in the data sampling function in the random forest classifier, the speedups in this experiment are not very high and are only roughly greater than 1. But we can still see the trend that the run time is decreasing when the number of threads is increasing. The speedup is the highest when there are 4 threads and the optimized speedup is around 1.07.
+
+In addition, we also used the random forest model from the pyspark.ml.classification library in PySpark. We experimented in Spark local mode with k=1,2,3,4 cores. This experiment is done in AWS EC2 environment with Ubuntu 16.04 and m4.xlarge to enable the evaluation of parallel implementation. The speedup is shown in the following plot:
+
+
+<img src="./images/pyspark_speedup.png">
+
+For the random forest classifier in PySpark library, the runtime first decreases and then increases with increase in the number of cores. The speedup first increases and then decreases and the maximum speedup is achieved when the number of cores equal to 3. Therefore, the optimized number of cores for the random forest classifier in PySpark is 3. While the accuracy rate of this model is lower than the overall accuracy rate of the random forest algorithm implemented by us with some random sampling of data, we didn’t use this random forest classifier to predict the sentiments of coronavirus related tweets.
+
+## Analysis
+### Overhead
+  -In Random Forest and Naive Bayes, the order doesn’t matter. If using OpenMP, data transferring and communication would take some time and could not be parallelized. Those would be the overhead. 
+Data Loading is a linear process and would need to be serial.
+### Numerical Complexity
+- Naive Bayes Model was divided into two parts: 
+      - 1.1 map attitude to string: O(n)
+      - 1.2 map text to BOW: O(n^2)
+  - In general, the complexity of Naive Bayes algorithm is O(nK), where n is the number of features extracted and K is the number of classes. 
+  - Speed-up happens in both processes.
+- Random Forest Model:
+    - 1.1 Data import: O(n)
+    - 1.2. TF-IDF: The numerical complexity of the TF-IDF algorithm is O(nL*lognL), where n is total number of sentences in corpus, and L is the average length of the sentences.
+    - 1.3. Training a random forest has a complexity of O(v * nlog(n)), where n is the size of the data, and v is the number of features. 
+    - 1.4 Model prediction takes O(k), where k is the size of the test/validation set. 
+  -Speed-up happens in step 1.2 and 1.3.
+
+## Discussion
+### Goals Achieved
+The goal of our project is to analyze the textual contents of people’s tweets on Twitter to understand their attitudes and thoughts towards coronavirus. Our models learn to make predictions with the tweets and can tell how people feel about the topic. Although there are some minor defects, the models nicely achieved our goal. 
+
+### Improvements Suggested
+The implementations of the two models are already very nice, and the performance is fairly satisfying. However, if we were to suggest some further improvements to make the models even better. They would be as follows. The two models are using different dataset because of the tags and stop word issue. And while the labels of the random forest model can be positive, negative, or neural, the labels of the naive bayes model can only be either positive or negative. Two models are using different word representations. (But this can also be viewed as a way to explore the effect of different embedding method)  
+
+### Lessons Learnt
+### Future Work
+### Interesting Insights
+In the Random Forest Model, we used a TextBlob to identify sentiment from the contents of the tweets, and it will predict a label that is positive, neural, or negative.
+The model identified many negative tweets as positive (false positive)
+Most of the historical and current tweets are identified as positive, which is highly unlikely at this point. 
+
+
+
+
+## Conclusion
+Both Naive Bayes model and the Random Forest model have satisfying performance, with respectively 0.83 and 0.9379 accuracy (correctly classfied labels). The Naive Bayes model achieved parallelization by applying multiprocessing (pool method) in priors and posteriors, and the random forest utilized multiprocessing, multithreading, and map reduce in realize TF-IDF convertion. They both achieved reasonable speedups. 
+
+The two models have their own pros and cons. For the Naive Bayes model, the labels are either positive or negative, so it doesn't provide a possibility for being neutral. And for the Random Forest model, many negative texts are classfied as positive (false positive). In some cases, the number of positive posts are much larger than that of negative posts, which is highly unlikely to be real.  
+
+## Citation
+https://machinelearningmastery.com/implement-random-forest-scratch-python/
+https://towardsdatascience.com/natural-language-processing-in-apache-spark-using-nltk-part-1-2-58c68824f660
+https://www.kaggle.com/kazanova/sentiment140
+https://www.kaggle.com/crowdflower/twitter-airline-sentiment
+https://github.com/Mottl/GetOldTweets3
+
