@@ -100,5 +100,13 @@ We also predicted the sentiments of another dataset with 114496 coronavirus rela
 
 From this plot we can see that for this larger dataset, the number of tweets that are predicted as negative is slightly lower than the number of tweets predicted as neutral and is much higher than the number of tweets predicted as positive over time (from May 2nd to May 8th). 
 
+## Performance Evaluation
+### Naive Bayes Model
+We have discussed why we can apply multiprocessing to help us speed up our Bayes model. We used the Pool function here to give an optimal number of processes needed for prior and posterior calculations. This optimal number greatly depends on the number of samples, i.e. the number of tweets we want to calculate for predictions. Therefore, we set the number of samples as the independent variable, and time spent as dependent variable. Specifically, we recorded the serial time, the time spent when running the predictions in serial, and the parallel time, the time spent when we applied multiprocessing as optimizations to run the predictions in parallel. Here is the time plot.
 
+<img src="./images/time.png">
+
+Having this, we can further see the speedup, the ratio of parallel time to serial time.
+
+<img src="./images/speedup.png">
 
