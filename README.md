@@ -156,7 +156,7 @@ Data Loading is a linear process and would need to be serial.
 
 ## Discussion
 ### Goals Achieved
-The goal of our project is to analyze the textual contents of people’s tweets on Twitter to understand their attitudes and thoughts towards coronavirus. Our models learn to make predictions with the tweets and can tell how people feel about the topic. Although there are some minor defects, the models nicely achieved our goal. 
+The goal of our project is to analyze the textual contents of people’s tweets on Twitter to understand their attitudes and thoughts towards coronavirus. Our models learn to make predictions with the tweets and can tell how people feel about the topic. Our models nicely achieved our goal. 
 
 ### Improvements Suggested
 The implementations of the two models are already very nice, and the performance is fairly satisfying. However, if we were to suggest some further improvements to make the models even better. They would be as follows. The two models are using different dataset because of the tags and stop word issue. And while the labels of the random forest model can be positive, negative, or neural, the labels of the naive bayes model can only be either positive or negative. Two models are using different word representations. (But this can also be viewed as a way to explore the effect of different embedding method)  
